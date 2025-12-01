@@ -7,7 +7,7 @@ permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
 jobs:
-  S3BuketList:
+  VPCList:
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
@@ -18,7 +18,7 @@ jobs:
           role-to-assume: ${{ secrets.ARN_ROLE }}
           role-session-name: ci-cd
           aws-region: ${{ env.AWS_REGION }}
-      # List bucket  in  AWS s3
-      - name:  AWS S3 Ls
+      # List VPC
+      - name:  AWS VPC
         run: |
           aws ec2 describe-vpcs
