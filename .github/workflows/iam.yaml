@@ -1,0 +1,24 @@
+name: AWS IAM list
+on:
+  push
+env:
+  AWS_REGION : "us-east-1"   
+permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
+jobs:
+  VPCList:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.ARN_ROLE_IAM }}
+          role-session-name: iam-role
+          aws-region: ${{ env.AWS_REGION }}
+      # List IAM role
+      - name:  AWS IAM role
+        run: |
+          aws iam list-roles | jq -r '.Roles[].RoleName'
